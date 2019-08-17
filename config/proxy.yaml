@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+    bind:
+      $dockerLabelDomain: '%env(DOCKER_LABEL_DOMAIN)%'
+      $dockerLabelPort: '%env(DOCKER_LABEL_PORT)%'
+      $dockerLabelPath: '%env(DOCKER_LABEL_PATH)%'
+      $dockerLabelSsl: '%env(DOCKER_LABEL_SSL)%'
+      $dockerLabelCertificateProviderPrefix: '%env(DOCKER_LABEL_CERTIFICATE_PROVIDER_PREFIX)%'
+      $dockerLabelConnectDomain: '%env(DOCKER_LABEL_CONNECT_DOMAIN)%'
+      $virtualHostDirectory: '%env(VIRTUAL_HOST_DIRECTORY)%'
+      $homepageDirectory: '%env(HOMEPAGE_DIRECTORY)%'
+
+  App\Proxy\NginxService: ~
+
+  App\Proxy\ProxyService: ~
