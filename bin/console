@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @author Philippe VANDERMOERE <philippe@wizaplace.com>
+ * @copyright Copyright (C) Philippe VANDERMOERE
+ * @license MIT
+ */
+
+declare(strict_types=1);
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+use App\Application;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Finder\Finder;
+
+if (false === class_exists(Dotenv::class)) {
+    throw new \RuntimeException(
+        'Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.'
+    );
+}
+
+(new Dotenv())->loadEnv(dirname(__DIR__) . '/.env');
+
+$containerBuilder = new ContainerBuilder();
+$loader = new YamlFileLoader(
+    $containerBuilder,
+    new FileLocator(dirname(__DIR__) . '/config')
+);
+
+$finder = new Finder();
+$finder->files()
+    ->in(dirname(__DIR__) . '/config')
+    ->name('*.yaml')
+;
+
+foreach ($finder as $file) {
+    $loader->load($file->getBasename());
+}
+
+$containerBuilder->setParameter('rootDirectory', dirname(__DIR__));
+$containerBuilder->compile(true);
+
+$application = $containerBuilder->get(Application::CLASS);
+$application->run();

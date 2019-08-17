@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+    bind:
+      $dockerSocketPath: '%env(DOCKER_SOCKET)%'
+
+  PhilippeVandermoere\DockerPhpSdk\DockerFactory: ~
+
+  app.docker.client:
+    class: Http\Client\Curl\Client
+    factory: ['@PhilippeVandermoere\DockerPhpSdk\DockerFactory', 'createSocketDockerClient']
+
+  Http\Client\HttpClient $dockerClient: '@app.docker.client'
+
+  PhilippeVandermoere\DockerPhpSdk\DockerService:
+    factory: ['@PhilippeVandermoere\DockerPhpSdk\DockerFactory', 'createDockerService']

@@ -1,0 +1,6 @@
+.circleci
+tests
+vendor
+.gitignore
+README.md
+LICENCE

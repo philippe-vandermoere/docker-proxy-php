@@ -1,0 +1,20 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+    bind:
+      $twigExtensions: !tagged twig.extensions
+      $templatesDirectory: '%rootDirectory%/templates'
+      $httpPort: '%env(int:HTTP_PORT)%'
+      $httpsPort: '%env(int:HTTPS_PORT)%'
+
+  _instanceof:
+    Twig\Extension\ExtensionInterface:
+      tags: ['twig.extensions']
+
+  App\Twig\TwigFactory: ~
+
+  App\Twig\ProxyExtension: ~
+
+  Twig\Environment:
+    factory: 'App\Twig\TwigFactory:create'
