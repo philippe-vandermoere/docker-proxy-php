@@ -1,5 +1,8 @@
 # Docker-proxy PHP
 
+![CircleCI](https://img.shields.io/circleci/build/github/philippe-vandermoere/docker-proxy-php)
+[![codecov](https://codecov.io/gh/philippe-vandermoere/docker-proxy-php/branch/master/graph/badge.svg)](https://codecov.io/gh/philippe-vandermoere/docker-proxy-php)
+
 PHP implementation of [docker-proxy](https://github.com/philippe-vandermoere/docker-proxy).
 
 ## Development
