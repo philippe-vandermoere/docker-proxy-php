@@ -74,6 +74,15 @@ jobs:
             - run:
                 name: phpunit
                 command: bin/phpunit
+            - store_artifacts:
+                path: build
+            - store_test_results:
+                path: build/phpunit
+            - run:
+                name: push code coverage report to codecov
+                command: |
+                    apk add bash
+                    curl -s https://codecov.io/bash | bash
 
     dockerhub:
         docker:

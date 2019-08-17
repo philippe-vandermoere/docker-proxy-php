@@ -2,4 +2,5 @@
 /.env.local
 !.gitkeep
 /var
-.idea
+/.idea
+/build

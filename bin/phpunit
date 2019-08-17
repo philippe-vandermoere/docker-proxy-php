@@ -10,16 +10,10 @@ if [[ "$(which phpdbg)" != "" ]]; then
         --colors=always \
         --process-isolation \
         --bootstrap ${PROJECT_DIRECTORY}/vendor/autoload.php \
+        --log-junit ${PROJECT_DIRECTORY}/build/phpunit/junit.xml \
         --whitelist=${PROJECT_DIRECTORY}/src \
-        --coverage-text
-elif [[ "$(/usr/bin/env php -m | grep -c xdebug)" -eq 1 ]]; then
-    # code coverage with xdebug
-    ${PROJECT_DIRECTORY}/vendor/bin/phpunit ${PROJECT_DIRECTORY}/tests \
-        --colors=always \
-        --process-isolation \
-        --bootstrap ${PROJECT_DIRECTORY}/vendor/autoload.php \
-        --whitelist=${PROJECT_DIRECTORY}/src \
-        --coverage-text
+        --coverage-html ${PROJECT_DIRECTORY}/build/coverage-report \
+        --coverage-clover ${PROJECT_DIRECTORY}/build/coverage-report/clover.xml
 else
     # no code coverage
     ${PROJECT_DIRECTORY}/vendor/bin/phpunit ${PROJECT_DIRECTORY}/tests \
