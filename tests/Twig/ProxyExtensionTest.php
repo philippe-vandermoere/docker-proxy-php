@@ -74,7 +74,7 @@ class ProxyExtensionTest extends TestCase
 
         $expected = sprintf(
             '%s://%s:%d%s',
-            $ssl ? 'https' : 'https',
+            $ssl ? 'https' : 'http',
             $domain,
             $ssl ? $httpsPort : $httpPort,
             $path
