@@ -12,7 +12,6 @@ namespace App;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Command\Command;
 
-/** @codeCoverageIgnore */
 class Application extends ConsoleApplication
 {
     public function __construct(iterable $commands)

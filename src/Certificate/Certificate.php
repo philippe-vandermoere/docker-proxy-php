@@ -118,11 +118,9 @@ class Certificate
     protected function writeFileContent(string $filename, string $content): self
     {
         $splFileObject = new \SplFileObject($filename, 'w');
-        // @codeCoverageIgnoreStart
         if (0 === $splFileObject->fwrite($content)) {
             throw new \RuntimeException('Unable to write file `' . $splFileObject->getRealPath()  . '`.');
         }
-        // @codeCoverageIgnoreEnd
 
         return $this;
     }
@@ -131,11 +129,9 @@ class Certificate
     {
         $splFileObject = new \SplFileObject($filename, 'r');
         $content = $splFileObject->fread($splFileObject->getSize());
-        // @codeCoverageIgnoreStart
         if (false === $content) {
             throw new \RuntimeException('Unable to read file `' . $splFileObject->getRealPath()  . '`.');
         }
-        // @codeCoverageIgnoreEnd
 
         return $content;
     }

@@ -33,7 +33,6 @@ class SelfSigned implements ProviderInterface
             ]
         );
 
-        // @codeCoverageIgnoreStart
         if (false === $key) {
             throw new \RuntimeException('Unable to create privateKey.');
         }
@@ -45,15 +44,12 @@ class SelfSigned implements ProviderInterface
             $key
         );
 
-        // @codeCoverageIgnoreStart
         if (false === $csr) {
             throw new \RuntimeException('Unable to create CSR.');
         }
-        // @codeCoverageIgnoreEnd
 
         $csrSign = \openssl_csr_sign($csr, null, $key, static::CERTIFICATE_VALIDITY_DAYS);
 
-        // @codeCoverageIgnoreStart
         if (false === $csrSign) {
             throw new \RuntimeException('Unable to sign CSR with privateKey.');
         }
@@ -65,7 +61,6 @@ class SelfSigned implements ProviderInterface
         if (false === \openssl_pkey_export($key, $privateKey)) {
             throw new \RuntimeException('Unable to export privateKey.');
         }
-        // @codeCoverageIgnoreEnd
 
         return $certificate
             ->writeCertificate($cert)

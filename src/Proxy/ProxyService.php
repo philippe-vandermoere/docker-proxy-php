@@ -45,9 +45,6 @@ class ProxyService
     /** @var string */
     protected $dockerLabelCertificateProviderPrefix;
 
-    /** @var string */
-    protected $dockerLabelConnectDomain;
-
     /** @var ?ContainerCollection */
     protected $containerCollection;
 
@@ -62,8 +59,7 @@ class ProxyService
         string $dockerLabelPort,
         string $dockerLabelSsl,
         string $dockerLabelPath,
-        string $dockerLabelCertificateProviderPrefix,
-        string $dockerLabelConnectDomain
+        string $dockerLabelCertificateProviderPrefix
     ) {
         $this->dockerService = $dockerService;
         $this->nginxService = $nginxService;
@@ -73,19 +69,56 @@ class ProxyService
         $this->dockerLabelPath = $dockerLabelPath;
         $this->dockerLabelSsl = $dockerLabelSsl;
         $this->dockerLabelCertificateProviderPrefix = $dockerLabelCertificateProviderPrefix;
-        $this->dockerLabelConnectDomain = $dockerLabelConnectDomain;
     }
 
-    public function configureProxy(): self
+    public function getProxyCollection(): ProxyCollection
     {
-        // reset docker cache
-        $this->containerCollection = null;
-        $this->networkCollection = null;
+        $proxyNetwork = $this->getProxyNetwork();
+        $proxyCollection = new ProxyCollection();
+        foreach ($this->listDockerContainer(false) as $container) {
+            $domain = $container->getLabels()->getValue($this->dockerLabelDomain);
+            if (null === $domain) {
+                continue;
+            }
 
-        $proxyCollection = $this->getProxyCollection();
+            if (false === $proxyCollection->offsetExists($domain)) {
+                $proxyCollection[] = new Proxy(
+                    $domain,
+                    $this->getCertificate($domain, $container)
+                );
+            }
+
+            if (false === isset($container->getNetworks()[$proxyNetwork->getId()])) {
+                $this->dockerService->getNetworkService()->connectContainer(
+                    $proxyNetwork->getId(),
+                    $container->getId()
+                );
+
+                // reload object from docker API
+                $container = $this->dockerService->getContainerService()->get($container->getId());
+            }
+
+            $proxyCollection
+                ->offsetGet($domain)
+                ->addServer(
+                    new Server(
+                        $container->getId(),
+                        $container->getName(),
+                        $container->getNetworks()[$proxyNetwork->getId()]->getIp(),
+                        (int) ($container->getLabels()->getValue($this->dockerLabelPort) ?? static::DEFAULT_HTTP_PORT)
+                    ),
+                    $container->getLabels()->getValue($this->dockerLabelPath) ?? '/'
+                )
+            ;
+        }
+
+        return $proxyCollection;
+    }
+
+    public function configureProxy(ProxyCollection $proxyCollection): self
+    {
         foreach ($proxyCollection as $proxy) {
             $this->nginxService->createProxyVirtualHost($proxy);
-            $this->dockerDomainNetwork($proxy->getDomain());
         }
 
         $this->nginxService
@@ -134,50 +167,6 @@ class ProxyService
         throw new \RuntimeException('Unable to find docker-proxy Network.');
     }
 
-    protected function getProxyCollection(): ProxyCollection
-    {
-        $proxyNetwork = $this->getProxyNetwork();
-        $proxyCollection = new ProxyCollection();
-        foreach ($this->listDockerContainer() as $container) {
-            $domain = $container->getLabels()->getValue($this->dockerLabelDomain);
-            if (null === $domain) {
-                continue;
-            }
-
-            if (false === $proxyCollection->offsetExists($domain)) {
-                $proxyCollection[] = new Proxy(
-                    $domain,
-                    $this->getCertificate($domain, $container)
-                );
-            }
-
-            if (false === isset($container->getNetworks()[$proxyNetwork->getId()])) {
-                $this->dockerService->getNetworkService()->connectContainer(
-                    $proxyNetwork->getId(),
-                    $container->getId()
-                );
-
-                // reload object from docker API
-                $container = $this->dockerService->getContainerService()->get($container->getId());
-            }
-
-            $proxyCollection
-                ->offsetGet($domain)
-                ->addServer(
-                    new Server(
-                        $container->getId(),
-                        $container->getName(),
-                        $container->getNetworks()[$proxyNetwork->getId()]->getIp(),
-                        (int) ($container->getLabels()->getValue($this->dockerLabelPort) ?? static::DEFAULT_HTTP_PORT)
-                    ),
-                    $container->getLabels()->getValue($this->dockerLabelPath) ?? '/'
-                )
-            ;
-        }
-
-        return $proxyCollection;
-    }
-
     protected function getCertificate(string $domain, Container $container): ?Certificate
     {
         if (false === filter_var($container->getLabels()->getValue($this->dockerLabelSsl), FILTER_VALIDATE_BOOLEAN)) {
@@ -206,61 +195,6 @@ class ProxyService
             );
             return null;
         }
-    }
-
-    protected function dockerDomainNetwork(string $domain): self
-    {
-        $network = $this->createDockerDomainNetwork($domain);
-        if (false === isset($this->getNginxContainer()->getNetworks()[$network->getId()])) {
-            echo 'Docker: connect proxy to network ' . $domain . '.' . PHP_EOL;
-            $this->dockerService
-                ->getNetworkService()
-                ->connectContainer(
-                    $network->getId(),
-                    $this->getNginxContainer()->getId(),
-                    [$domain]
-                )
-            ;
-        }
-
-        foreach ($this->listDockerContainer() as $container) {
-            if ($domain === $container->getLabels()->getValue($this->dockerLabelConnectDomain)
-                && false === isset($container->getNetworks()[$network->getId()])
-            ) {
-                echo sprintf(
-                    "Docker: connect container %s to network %s.\n",
-                    $container->getName(),
-                    $domain
-                );
-
-                $this->dockerService
-                    ->getNetworkService()
-                    ->connectContainer(
-                        $network->getId(),
-                        $container->getId()
-                    )
-                ;
-            }
-        }
-
-        return $this;
-    }
-
-    protected function createDockerDomainNetwork(string $domain): Network
-    {
-        foreach ($this->listDockerNetwork() as $network) {
-            if ($domain === $network->getName()) {
-                return $network;
-            }
-        }
-
-        echo 'Docker: create docker network ' . $domain . '.' . PHP_EOL;
-        $network = $this->dockerService
-            ->getNetworkService()
-            ->create($domain)
-        ;
-
-        return $network;
     }
 
     protected function listDockerContainer(bool $cache = true): ContainerCollection
