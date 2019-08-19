@@ -97,7 +97,7 @@ class CertificateTest extends TestCase
         $certificate = $this
             ->getMockBuilder(Certificate::class)
             ->disableOriginalConstructor()
-            ->setMethods(['parseCertificate'])
+            ->onlyMethods(['parseCertificate'])
             ->getMock()
         ;
 
@@ -122,7 +122,7 @@ class CertificateTest extends TestCase
         $certificate = $this
             ->getMockBuilder(Certificate::class)
             ->disableOriginalConstructor()
-            ->setMethods(['parseCertificate'])
+            ->onlyMethods(['parseCertificate'])
             ->getMock()
         ;
 
@@ -149,7 +149,7 @@ class CertificateTest extends TestCase
         $certificate = $this
             ->getMockBuilder(Certificate::class)
             ->disableOriginalConstructor()
-            ->setMethods(['parseCertificate'])
+            ->onlyMethods(['parseCertificate'])
             ->getMock()
         ;
 
@@ -174,7 +174,7 @@ class CertificateTest extends TestCase
         $certificate = $this
             ->getMockBuilder(Certificate::class)
             ->disableOriginalConstructor()
-            ->setMethods(['parseCertificate'])
+            ->onlyMethods(['parseCertificate'])
             ->getMock()
         ;
 
@@ -202,7 +202,7 @@ class CertificateTest extends TestCase
         $certificate = $this
             ->getMockBuilder(Certificate::class)
             ->disableOriginalConstructor()
-            ->setMethods(['parseCertificate'])
+            ->onlyMethods(['parseCertificate'])
             ->getMock()
         ;
 

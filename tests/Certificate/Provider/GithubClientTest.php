@@ -47,7 +47,7 @@ class GithubClientTest extends TestCase
         $githubClient = $this
             ->getMockBuilder(GithubClient::class)
             ->disableOriginalConstructor()
-            ->setMethods(['callApi'])
+            ->onlyMethods(['callApi'])
             ->getMock()
         ;
 

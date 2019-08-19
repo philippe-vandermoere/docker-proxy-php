@@ -31,7 +31,7 @@ class ProxyCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->proxyService
-            ->configureProxy()
+            ->configureProxy($this->proxyService->getProxyCollection())
             ->reloadProxy()
         ;
 

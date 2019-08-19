@@ -57,7 +57,7 @@ class CertificateServiceTest extends TestCase
         $certificateService = $this
             ->getMockBuilder(CertificateService::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createEmptyCertificate', 'getProvider'])
+            ->onlyMethods(['createEmptyCertificate', 'getProvider'])
             ->getMock()
         ;
 
@@ -132,7 +132,7 @@ class CertificateServiceTest extends TestCase
         $certificateService = $this
             ->getMockBuilder(CertificateService::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createEmptyCertificate', 'getProvider'])
+            ->onlyMethods(['createEmptyCertificate', 'getProvider'])
             ->getMock()
         ;
 
@@ -187,7 +187,7 @@ class CertificateServiceTest extends TestCase
         $certificateService = $this
             ->getMockBuilder(CertificateService::class)
             ->disableOriginalConstructor()
-            ->setMethods(['createEmptyCertificate', 'getProvider'])
+            ->onlyMethods(['createEmptyCertificate', 'getProvider'])
             ->getMock()
         ;
 
