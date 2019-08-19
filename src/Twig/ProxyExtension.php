@@ -48,7 +48,7 @@ class ProxyExtension extends AbstractExtension
     {
         return sprintf(
             '%s://%s:%d%s',
-            $proxy->hasSsl() ? 'https' : 'https',
+            $proxy->hasSsl() ? 'https' : 'http',
             $proxy->getDomain(),
             $proxy->hasSsl() ? $this->httpsPort : $this->httpPort,
             $path
