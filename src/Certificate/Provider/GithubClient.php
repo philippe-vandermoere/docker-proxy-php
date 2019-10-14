@@ -27,7 +27,7 @@ class GithubClient
     public function getApiContent(
         string $repository,
         string $path,
-        string $token,
+        string $token = null,
         string $reference = 'master'
     ): string {
         return $this->callApi(
@@ -36,17 +36,22 @@ class GithubClient
         );
     }
 
-    protected function callApi(string $route, string $token, string $method = 'GET'): string
+    protected function callApi(string $route, string $token = null, string $method = 'GET'): string
     {
+        $headers = [
+            'Accept' => 'application/vnd.github.v3.raw',
+            'User-Agent' => 'docker-proxy',
+        ];
+
+        if (\is_string($token)) {
+            $headers['Authorization'] = 'token ' . $token;
+        }
+
         $response = $this->githubClient->sendRequest(
             new Request(
                 $method,
                 static::GITHUB_API_URL . $route,
-                [
-                    'Authorization' => 'token ' . $token,
-                    'Accept' => 'application/vnd.github.v3.raw',
-                    'User-Agent' => 'docker-proxy'
-                ]
+                $headers
             )
         );
 

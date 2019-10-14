@@ -27,7 +27,7 @@ class ProxyExtensionTest extends TestCase
         }
 
         static::expectException(\InvalidArgumentException::class);
-        static::expectExceptionMessage('httpPort `' . $httpPort .'` must be between 1 and 65535.');
+        static::expectExceptionMessage('httpPort `' . $httpPort . '` must be between 1 and 65535.');
         new ProxyExtension($httpPort, 443);
     }
 
@@ -39,7 +39,7 @@ class ProxyExtensionTest extends TestCase
             $httpsPort = mt_rand(-PHP_INT_MAX, 0);
         }
         static::expectException(\InvalidArgumentException::class);
-        static::expectExceptionMessage('httpsPort `' . $httpsPort .'` must be between 1 and 65535.');
+        static::expectExceptionMessage('httpsPort `' . $httpsPort . '` must be between 1 and 65535.');
         new ProxyExtension(80, $httpsPort);
     }
 

@@ -25,11 +25,11 @@ class ProxyExtension extends AbstractExtension
     public function __construct(int $httpPort, int $httpsPort)
     {
         if (false === Validator::validatePort($httpPort)) {
-            throw new \InvalidArgumentException('httpPort `' . $httpPort .'` must be between 1 and 65535.');
+            throw new \InvalidArgumentException('httpPort `' . $httpPort . '` must be between 1 and 65535.');
         }
 
         if (false === Validator::validatePort($httpsPort)) {
-            throw new \InvalidArgumentException('httpsPort `' . $httpsPort .'` must be between 1 and 65535.');
+            throw new \InvalidArgumentException('httpsPort `' . $httpsPort . '` must be between 1 and 65535.');
         }
 
         $this->httpPort = $httpPort;

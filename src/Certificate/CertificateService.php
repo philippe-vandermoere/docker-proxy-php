@@ -56,7 +56,8 @@ class CertificateService
         return new Certificate(
             $domain,
             $this->certificateDirectory . '/' . $domain . '/certificate.pem',
-            $this->certificateDirectory . '/' . $domain . '/privatekey.pem'
+            $this->certificateDirectory . '/' . $domain . '/privatekey.pem',
+            $this->certificateDirectory . '/' . $domain . '/chain.pem'
         );
     }
 

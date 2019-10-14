@@ -22,8 +22,15 @@ class Certificate
     /** @var string */
     protected $privateKeyFilename;
 
-    public function __construct(string $domain, string $certificateFilename, string $privateKeyFilename)
-    {
+    /** @var string */
+    protected $certificateChainFilename;
+
+    public function __construct(
+        string $domain,
+        string $certificateFilename,
+        string $privateKeyFilename,
+        string $certificateChainFilename
+    ) {
         if (false === Validator::validateDomain($domain)) {
             throw new \InvalidArgumentException('domain `' . $domain . '` must be respect the RFC.');
         }
@@ -31,6 +38,7 @@ class Certificate
         $this->domain = $domain;
         $this->certificateFilename = $certificateFilename;
         $this->privateKeyFilename = $privateKeyFilename;
+        $this->certificateChainFilename = $certificateChainFilename;
     }
 
     public function getDomain(): string
@@ -48,6 +56,16 @@ class Certificate
         return $this->privateKeyFilename;
     }
 
+    public function getCertificateChainFilename(): string
+    {
+        return $this->certificateChainFilename;
+    }
+
+    public function hasCertificateChain(): bool
+    {
+        return true === \is_file($this->getCertificateChainFilename());
+    }
+
     public function writeCertificate(string $certificate): self
     {
         return $this->writeFileContent($this->getCertificateFilename(), $certificate);
@@ -56,6 +74,13 @@ class Certificate
     public function writePrivateKey(string $privateKey): self
     {
         return $this->writeFileContent($this->getPrivateKeyFilename(), $privateKey);
+    }
+
+    public function writeCertificateChain(string $certificateChain): self
+    {
+        $this->writeFileContent($this->getCertificateChainFilename(), $certificateChain);
+
+        return $this;
     }
 
     public function getStartDate(): \DateTimeInterface
