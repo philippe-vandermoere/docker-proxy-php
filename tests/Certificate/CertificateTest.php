@@ -22,12 +22,14 @@ class CertificateTest extends TestCase
         $certificate = new Certificate(
             $domain = $faker->domainName,
             $certificateFilename = sys_get_temp_dir() . '/' . $faker->word,
-            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word
+            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word,
+            $certificateChainFilename = sys_get_temp_dir() . '/' . $faker->word
         );
 
         static::assertEquals($domain, $certificate->getDomain());
         static::assertEquals($certificateFilename, $certificate->getCertificateFilename());
         static::assertEquals($privateKeyFilename, $certificate->getPrivateKeyFilename());
+        static::assertEquals($certificateChainFilename, $certificate->getCertificateChainFilename());
     }
 
     public function testConstructError(): void
@@ -41,8 +43,34 @@ class CertificateTest extends TestCase
         new Certificate(
             $domain,
             sys_get_temp_dir() . '/' . $faker->word,
+            sys_get_temp_dir() . '/' . $faker->word,
             sys_get_temp_dir() . '/' . $faker->word
         );
+    }
+
+    public function testHasCertificateChain(): void
+    {
+        $faker = FakerFactory::create();
+        $certificate = new Certificate(
+            $faker->domainName,
+            $certificateFilename = sys_get_temp_dir() . '/' . $faker->word,
+            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word,
+            $certificateChainFilename = sys_get_temp_dir() . '/' . $faker->word
+        );
+
+        static::assertEquals(
+            false,
+            $certificate->hasCertificateChain()
+        );
+
+        file_put_contents($certificateChainFilename, $faker->text);
+
+        static::assertEquals(
+            true,
+            $certificate->hasCertificateChain()
+        );
+
+        unlink($certificateChainFilename);
     }
 
     public function testWriteCertificate(): void
@@ -51,7 +79,8 @@ class CertificateTest extends TestCase
         $certificate = new Certificate(
             $faker->domainName,
             $certificateFilename = sys_get_temp_dir() . '/' . $faker->word,
-            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word
+            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word,
+            sys_get_temp_dir() . '/' . $faker->word
         );
 
         static::assertEquals(
@@ -73,7 +102,8 @@ class CertificateTest extends TestCase
         $certificate = new Certificate(
             $faker->domainName,
             $certificateFilename = sys_get_temp_dir() . '/' . $faker->word,
-            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word
+            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word,
+            $certificateChainFilename = sys_get_temp_dir() . '/' . $faker->word
         );
 
         static::assertEquals(
@@ -87,6 +117,29 @@ class CertificateTest extends TestCase
         );
 
         unlink($privateKeyFilename);
+    }
+
+    public function testWriteCertificateChain(): void
+    {
+        $faker = FakerFactory::create();
+        $certificate = new Certificate(
+            $faker->domainName,
+            $certificateFilename = sys_get_temp_dir() . '/' . $faker->word,
+            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word,
+            $certificateChainFilename = sys_get_temp_dir() . '/' . $faker->word
+        );
+
+        static::assertEquals(
+            $certificate,
+            $certificate->writeCertificateChain($certificateChainContent = $faker->text)
+        );
+
+        static::assertEquals(
+            $certificateChainContent,
+            file_get_contents($certificateChainFilename)
+        );
+
+        unlink($certificateChainFilename);
     }
 
     public function testStartDate(): void
@@ -229,7 +282,8 @@ class CertificateTest extends TestCase
         $certificate = new Certificate(
             $faker->domainName,
             $certificateFilename = __DIR__ . '/certificate.pem',
-            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word
+            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word,
+            sys_get_temp_dir() . '/' . $faker->word
         );
 
         $certificate = Tools::callProtectedMethod($certificate, 'parseCertificate');
@@ -247,7 +301,8 @@ class CertificateTest extends TestCase
         $certificate = new Certificate(
             $faker->domainName,
             $certificateFilename = __FILE__,
-            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word
+            $privateKeyFilename = sys_get_temp_dir() . '/' . $faker->word,
+            sys_get_temp_dir() . '/' . $faker->word
         );
 
         static::expectException(\RuntimeException::class);
@@ -274,6 +329,7 @@ class CertificateTest extends TestCase
                     $faker->domainName,
                     sys_get_temp_dir() . '/' . $faker->word,
                     sys_get_temp_dir() . '/' . $faker->word,
+                    sys_get_temp_dir() . '/' . $faker->word
                 ),
                 false
             ],
@@ -281,7 +337,8 @@ class CertificateTest extends TestCase
                 new Certificate(
                     $faker->domainName,
                     __DIR__ . '/certificate.pem',
-                    __FILE__
+                    __FILE__,
+                    sys_get_temp_dir() . '/' . $faker->word
                 ),
                 false
             ],
@@ -289,7 +346,8 @@ class CertificateTest extends TestCase
                 new Certificate(
                     'test.com',
                     __DIR__ . '/certificate.pem',
-                    __FILE__
+                    __FILE__,
+                    sys_get_temp_dir() . '/' . $faker->word
                 ),
                 false
             ],
@@ -297,7 +355,8 @@ class CertificateTest extends TestCase
                 new Certificate(
                     $faker->domainName,
                     __DIR__ . '/certificate.pem',
-                    __DIR__ . '/privatekey.pem'
+                    __DIR__ . '/privatekey.pem',
+                    sys_get_temp_dir() . '/' . $faker->word
                 ),
                 false
             ],
@@ -305,7 +364,8 @@ class CertificateTest extends TestCase
                 new Certificate(
                     'test.com',
                     __DIR__ . '/certificate.pem',
-                    __DIR__ . '/privatekey.pem'
+                    __DIR__ . '/privatekey.pem',
+                    sys_get_temp_dir() . '/' . $faker->word
                 ),
                 true
             ],

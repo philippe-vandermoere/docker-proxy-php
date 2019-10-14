@@ -1,24 +1,24 @@
 services:
-  _defaults:
-    autowire: true
-    public: false
-    bind:
-      $providers: !tagged certificate.provider
-      $certificateDirectory: '%env(CERTIFICATE_DIRECTORY)%'
+    _defaults:
+        autowire: true
+        public: false
+        bind:
+            $providers: !tagged certificate.provider
+            $certificateDirectory: '%env(CERTIFICATE_DIRECTORY)%'
 
-  _instanceof:
-    App\Certificate\ProviderInterface:
-      tags: ['certificate.provider']
+    _instanceof:
+        App\Certificate\ProviderInterface:
+            tags: ['certificate.provider']
 
-  App\Certificate\CertificateService: ~
+    App\Certificate\CertificateService: ~
 
-  App\Certificate\Provider\SelfSigned: ~
+    App\Certificate\Provider\SelfSigned: ~
 
-  app.github.client:
-    class: Http\Client\Curl\Client
+    app.github.client:
+        class: Http\Client\Curl\Client
 
-  Http\Client\HttpClient $githubClient: '@app.github.client'
+    Http\Client\HttpClient $githubClient: '@app.github.client'
 
-  App\Certificate\Provider\GithubClient: ~
+    App\Certificate\Provider\GithubClient: ~
 
-  App\Certificate\Provider\Github: ~
+    App\Certificate\Provider\Github: ~

@@ -71,7 +71,8 @@ class GithubClientTest extends TestCase
         );
     }
 
-    public function testCallApi(): void
+    /** @dataProvider getToken */
+    public function testCallApi(?string $token, array $headers): void
     {
         $faker = FakerFactory::create();
         $httpClient = $this->createMock(HttpClient::class);
@@ -99,7 +100,6 @@ class GithubClientTest extends TestCase
 
         $method = 'GET'; //@todo faker http verb
         $route = '/' . $faker->slug;
-        $token = $faker->uuid;
 
         $httpClient
             ->expects($this->once())
@@ -108,11 +108,7 @@ class GithubClientTest extends TestCase
                 new Request(
                     $method,
                     Tools::getConstant($githubClient, 'GITHUB_API_URL') . $route,
-                    [
-                        'Authorization' => 'token ' . $token,
-                        'Accept' => 'application/vnd.github.v3.raw',
-                        'User-Agent' => 'docker-proxy'
-                    ]
+                    $headers
                 )
             )
         ;
@@ -142,7 +138,8 @@ class GithubClientTest extends TestCase
         );
     }
 
-    public function testCallApiError(): void
+    /** @dataProvider getToken */
+    public function testCallApiError(?string $token, array $headers): void
     {
         $faker = FakerFactory::create();
         $httpClient = $this->createMock(HttpClient::class);
@@ -165,7 +162,6 @@ class GithubClientTest extends TestCase
 
         $method = 'GET';
         $route = '/' . $faker->slug;
-        $token = $faker->uuid;
 
         $httpClient
             ->expects($this->once())
@@ -174,11 +170,7 @@ class GithubClientTest extends TestCase
                 new Request(
                     $method,
                     Tools::getConstant($githubClient, 'GITHUB_API_URL') . $route,
-                    [
-                        'Authorization' => 'token ' . $token,
-                        'Accept' => 'application/vnd.github.v3.raw',
-                        'User-Agent' => 'docker-proxy'
-                    ]
+                    $headers
                 )
             )
         ;
@@ -201,5 +193,22 @@ class GithubClientTest extends TestCase
             'callApi',
             [$route, $token, $method]
         );
+    }
+
+    public function getToken(): array
+    {
+        $faker = FakerFactory::create();
+        $token = $faker->uuid;
+
+        $headers = [
+            'Accept' => 'application/vnd.github.v3.raw',
+            'User-Agent' => 'docker-proxy'
+        ];
+
+        return [
+            [null, $headers],
+            ['token', array_merge($headers, ['Authorization' => 'token token'])],
+            [$token, array_merge($headers, ['Authorization' => 'token ' . $token])],
+        ];
     }
 }

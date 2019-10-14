@@ -57,7 +57,7 @@ class ServerTest extends TestCase
         }
 
         static::expectException(\InvalidArgumentException::class);
-        static::expectExceptionMessage('port `' . $port .'` must be between 1 and 65535.');
+        static::expectExceptionMessage('port `' . $port . '` must be between 1 and 65535.');
 
         new Server(
             $faker->uuid,

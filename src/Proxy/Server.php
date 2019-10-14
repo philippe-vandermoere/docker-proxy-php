@@ -32,7 +32,7 @@ class Server
         }
 
         if (false === Validator::validatePort($port)) {
-            throw new \InvalidArgumentException('port `' . $port .'` must be between 1 and 65535.');
+            throw new \InvalidArgumentException('port `' . $port . '` must be between 1 and 65535.');
         }
 
         $this->id = $id;

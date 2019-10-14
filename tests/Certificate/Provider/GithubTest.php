@@ -121,6 +121,108 @@ class GithubTest extends TestCase
         );
     }
 
+    public function testCreateCertificateWithChain(): void
+    {
+        $faker = FakerFactory::create();
+        $githubClient = $this->createMock(GithubClient::class);
+        $github = new Github($githubClient);
+        $certificate = $this->createMock(Certificate::class);
+
+        $options = [
+            'token' => $token = $faker->uuid,
+            'repository' => $repository = $faker->word,
+            'certificate_path' => $certificatePath = $faker->word,
+            'private_key_path' => $privateKeyPath = $faker->word,
+            'certificate_chain_path' => $certificateChainPath = $faker->word,
+        ];
+
+        $githubClient
+            ->method('getApiContent')
+            ->willReturnOnConsecutiveCalls(
+                $certificateChainContent = $faker->text,
+                $certificateContent = $faker->text,
+                $privateKeyContent = $faker->text
+            )
+        ;
+
+        $certificate
+            ->method('getDomain')
+            ->willReturn($domain = $faker->domainName)
+        ;
+
+        $certificate
+            ->method('writeCertificateChain')
+            ->willReturn($certificate)
+        ;
+
+        $certificate
+            ->method('writeCertificate')
+            ->willReturn($certificate)
+        ;
+
+        $certificate
+            ->method('writePrivateKey')
+            ->willReturn($certificate)
+        ;
+
+        $githubClient
+            ->expects($this->exactly(3))
+            ->method('getApiContent')
+            ->withConsecutive(
+                [
+                    $repository,
+                    $certificateChainPath,
+                    $token,
+                    'master'
+                ],
+                [
+                    $repository,
+                    $certificatePath,
+                    $token,
+                    'master'
+                ],
+                [
+                    $repository,
+                    $privateKeyPath,
+                    $token,
+                    'master'
+                ]
+            )
+        ;
+
+        $certificate
+            ->expects($this->once())
+            ->method('getDomain')
+        ;
+
+        $certificate
+            ->expects($this->once())
+            ->method('writeCertificateChain')
+            ->with($certificateChainContent)
+        ;
+
+        $certificate
+            ->expects($this->once())
+            ->method('writeCertificate')
+            ->with($certificateContent)
+        ;
+
+        $certificate
+            ->expects($this->once())
+            ->method('writePrivateKey')
+            ->with($privateKeyContent)
+        ;
+
+        static::expectOutputString(
+            'Certificate: Getting from github for domain `' . $domain . '`.' . PHP_EOL
+        );
+
+        static::assertEquals(
+            $certificate,
+            $github->createCertificate($certificate, $options)
+        );
+    }
+
     /** @dataProvider getCreateCertificateError */
     public function testCreateCertificateError(array $options, string $error): void
     {

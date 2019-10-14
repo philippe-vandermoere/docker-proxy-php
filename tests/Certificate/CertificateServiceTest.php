@@ -282,6 +282,10 @@ class CertificateServiceTest extends TestCase
             $directory . '/' . $domain . '/privatekey.pem',
             $certificate->getPrivateKeyFilename()
         );
+        static::assertEquals(
+            $directory . '/' . $domain . '/chain.pem',
+            $certificate->getCertificateChainFilename()
+        );
     }
 
     public function testGetProvider(): void
