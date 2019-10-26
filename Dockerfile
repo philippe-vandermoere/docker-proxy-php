@@ -1,15 +1,13 @@
-FROM php:7.3.9-cli-alpine
+FROM php:7.3.11-cli-alpine
 
 WORKDIR /app
-
-COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 COPY . /app
 
 RUN set -xe; \
+    curl -sl https://getcomposer.org/composer.phar -o /usr/local/bin/composer; \
+    chmod +x /usr/local/bin/composer; \
     composer global require hirak/prestissimo; \
     composer install --no-dev --classmap-authoritative --no-progress --no-interaction;
-
-ENTRYPOINT ["/usr/bin/env"]
 
 CMD ["bin/console", "proxy:start"]
