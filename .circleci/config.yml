@@ -2,7 +2,7 @@ version: '2.1'
 executors:
     php:
         docker:
-            - image: php:7.3.9-cli-alpine
+            - image: php:7.3.11-cli-alpine
 
 jobs:
     vendor:
