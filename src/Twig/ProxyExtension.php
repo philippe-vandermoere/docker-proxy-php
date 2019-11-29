@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -16,11 +17,8 @@ use App\Validator\Validator;
 
 class ProxyExtension extends AbstractExtension
 {
-    /** @var int */
-    protected $httpPort;
-
-    /** @var int */
-    protected $httpsPort;
+    protected int $httpPort;
+    protected int $httpsPort;
 
     public function __construct(int $httpPort, int $httpsPort)
     {
@@ -44,18 +42,18 @@ class ProxyExtension extends AbstractExtension
         ];
     }
 
-    public function proxyHref(Proxy $proxy, string $path = '/') :string
+    public function proxyHref(Proxy $proxy, string $path = '/'): string
     {
         return sprintf(
             '%s://%s:%d%s',
-            $proxy->hasSsl() ? 'https' : 'http',
+            (true === $proxy->hasSsl()) ? 'https' : 'http',
             $proxy->getDomain(),
-            $proxy->hasSsl() ? $this->httpsPort : $this->httpPort,
+            (true === $proxy->hasSsl()) ? $this->httpsPort : $this->httpPort,
             $path
         );
     }
 
-    public function proxyUpstream(Proxy $proxy, string $path = '/') :string
+    public function proxyUpstream(Proxy $proxy, string $path = '/'): string
     {
         $return = str_replace(['.'], ['_'], $proxy->getDomain());
         if ('/' !== $path) {

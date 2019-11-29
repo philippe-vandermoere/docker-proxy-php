@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -85,7 +86,7 @@ class GithubClientTest extends TestCase
 
         $response
             ->method('getStatusCode')
-            ->willReturn(mt_rand(0, 399)) //@todo faker http response
+            ->willReturn(mt_rand(0, 399))
         ;
 
         $response
@@ -98,7 +99,7 @@ class GithubClientTest extends TestCase
             ->willReturn($responseText = $faker->text)
         ;
 
-        $method = 'GET'; //@todo faker http verb
+        $method = 'GET';
         $route = '/' . $faker->slug;
 
         $httpClient

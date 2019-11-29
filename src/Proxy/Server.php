@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -13,17 +14,10 @@ use App\Validator\Validator;
 
 class Server
 {
-    /** @var string */
-    protected $id;
-
-    /** @var string */
-    protected $name;
-
-    /** @var string */
-    protected $ip;
-
-    /** @var int */
-    protected $port;
+    protected string $id;
+    protected string $name;
+    protected string $ip;
+    protected int $port;
 
     public function __construct(string $id, string $name, string $ip, int $port)
     {

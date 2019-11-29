@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -69,14 +70,14 @@ class ProxyExtensionTest extends TestCase
 
         $proxy = new Proxy(
             $domain,
-            $ssl ? $this->createMock(Certificate::class) : null
+            (true === $ssl) ? $this->createMock(Certificate::class) : null
         );
 
         $expected = sprintf(
             '%s://%s:%d%s',
-            $ssl ? 'https' : 'http',
+            (true === $ssl) ? 'https' : 'http',
             $domain,
-            $ssl ? $httpsPort : $httpPort,
+            (true === $ssl) ? $httpsPort : $httpPort,
             $path
         );
 

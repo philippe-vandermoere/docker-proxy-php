@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -21,7 +22,7 @@ use PhilippeVandermoere\DockerPhpSdk\Container\ContainerService;
 use PhilippeVandermoere\DockerPhpSdk\Container\Label;
 use PhilippeVandermoere\DockerPhpSdk\Container\LabelCollection;
 use PhilippeVandermoere\DockerPhpSdk\Network\NetworkCollection;
-use \PhilippeVandermoere\DockerPhpSdk\Container\NetworkCollection as ContainerNetworkCollection;
+use PhilippeVandermoere\DockerPhpSdk\Container\NetworkCollection as ContainerNetworkCollection;
 use PhilippeVandermoere\DockerPhpSdk\Container\Network as ContainerNetwork;
 use PhilippeVandermoere\DockerPhpSdk\DockerService;
 use PhilippeVandermoere\DockerPhpSdk\Network\Network;
@@ -99,14 +100,14 @@ class ProxyServiceTest extends TestCase
             ->getMockBuilder(ProxyService::class)
             ->setConstructorArgs(
                 [
-                        $dockerService = $this->createMock(DockerService::class),
-                        $this->createMock(NginxService::class),
-                        $this->createMock(CertificateService::class),
-                        $dockerLabelDomain = $faker->word,
-                        $dockerLabelPort = $faker->word,
-                        $faker->word,
-                        $dockerLabelPath = $faker->word,
-                        $faker->word
+                    $dockerService = $this->createMock(DockerService::class),
+                    $this->createMock(NginxService::class),
+                    $this->createMock(CertificateService::class),
+                    $dockerLabelDomain = $faker->word,
+                    $dockerLabelPort = $faker->word,
+                    $faker->word,
+                    $dockerLabelPath = $faker->word,
+                    $faker->word
                 ]
             )
             ->onlyMethods(['listDockerContainer', 'getProxyNetwork', 'getCertificate'])

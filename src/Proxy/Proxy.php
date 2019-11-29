@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -14,14 +15,9 @@ use App\Validator\Validator;
 
 class Proxy
 {
-    /** @var string */
-    protected $domain;
-
-    /** @var ?Certificate */
-    protected $certificate;
-
-    /** @var array */
-    protected $servers = [];
+    protected string $domain;
+    protected ?Certificate $certificate;
+    protected array $servers = [];
 
     public function __construct(string $domain, Certificate $certificate = null)
     {
@@ -45,7 +41,9 @@ class Proxy
 
     public function addServer(Server $server, string $path = '/'): self
     {
-        if (false === isset($this->servers[$path]) || false === $this->servers[$path] instanceof ServerCollection) {
+        if (false === \array_key_exists($path, $this->servers)
+            || false === $this->servers[$path] instanceof ServerCollection
+        ) {
             $this->servers[$path] = new ServerCollection();
         }
 
@@ -61,7 +59,9 @@ class Proxy
 
     public function getServers(string $path = '/'): ServerCollection
     {
-        if (isset($this->servers[$path]) && $this->servers[$path] instanceof ServerCollection) {
+        if (true === \array_key_exists($path, $this->servers)
+            && $this->servers[$path] instanceof ServerCollection
+        ) {
             return $this->servers[$path];
         }
 

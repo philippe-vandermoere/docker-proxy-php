@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -16,8 +17,7 @@ class GithubClient
 {
     protected const GITHUB_API_URL = 'https://api.github.com/repos';
 
-    /** @var HttpClient */
-    protected $githubClient;
+    protected HttpClient $githubClient;
 
     public function __construct(HttpClient $githubClient)
     {
@@ -43,7 +43,7 @@ class GithubClient
             'User-Agent' => 'docker-proxy',
         ];
 
-        if (\is_string($token)) {
+        if (true === \is_string($token)) {
             $headers['Authorization'] = 'token ' . $token;
         }
 
