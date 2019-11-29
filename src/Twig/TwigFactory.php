@@ -21,6 +21,7 @@ class TwigFactory
     /** @var ExtensionInterface[] */
     protected array $twigExtensions = [];
 
+    /** @param ExtensionInterface[] $twigExtensions */
     public function __construct(string $templatesDirectory, iterable $twigExtensions = [])
     {
         $this->templatesDirectory = $templatesDirectory;

@@ -125,6 +125,7 @@ class Certificate
         return true;
     }
 
+    /** @return mixed[] */
     protected function parseCertificate(): array
     {
         $certificate = \openssl_x509_parse($this->getFileContent($this->getCertificateFilename()));

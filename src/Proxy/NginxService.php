@@ -16,11 +16,8 @@ use Twig\Environment as Twig;
 class NginxService
 {
     protected const TEMPLATE_PROXY_FILE = 'nginx/virtualHost/proxy.conf';
-
     protected const TEMPLATE_DEFAULT_FILE = 'nginx/virtualHost/default.conf';
-
     protected const TEMPLATE_HOMEPAGE_FILE = 'nginx/index.html';
-
     protected const VIRTUAL_HOST_HOMEPAGE_FILE = 'default.conf';
 
     protected Twig $twigService;

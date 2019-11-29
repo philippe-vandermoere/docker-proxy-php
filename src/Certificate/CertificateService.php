@@ -17,6 +17,7 @@ class CertificateService
     protected ProviderCollection $providers;
     protected string $certificateDirectory;
 
+    /** @param ProviderInterface[] $providers */
     public function __construct(iterable $providers, string $certificateDirectory)
     {
         $this->providers = new ProviderCollection($providers);
@@ -27,6 +28,7 @@ class CertificateService
         $this->certificateDirectory = rtrim($certificateDirectory, '/');
     }
 
+    /** @param string[] $options */
     public function getCertificate(string $domain, array $options): Certificate
     {
         $certificate = $this->createEmptyCertificate($domain);
