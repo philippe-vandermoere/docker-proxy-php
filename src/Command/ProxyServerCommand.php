@@ -18,7 +18,7 @@ use React\EventLoop\Factory as EventLoopEventLoopFactory;
 
 class ProxyServerCommand extends Command
 {
-    protected static string $defaultName = 'proxy:start';
+    protected static $defaultName = 'proxy:start';
     protected ProxyService $proxyService;
 
     public function __construct(ProxyService $proxyService)

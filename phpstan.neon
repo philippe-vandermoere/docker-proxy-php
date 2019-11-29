@@ -2,5 +2,3 @@ parameters:
     level: max
     paths:
         - src/
-    ignoreErrors:
-        - '#PHPDoc tag @var for property App\Command\ProxyCommand::$defaultName with type string|null is not subtype of native type string.#'

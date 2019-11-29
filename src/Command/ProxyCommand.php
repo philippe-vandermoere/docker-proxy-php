@@ -17,8 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProxyCommand extends Command
 {
-    protected static string $defaultName = 'proxy:run';
-
+    protected static $defaultName = 'proxy:run';
     protected ProxyService $proxyService;
 
     public function __construct(ProxyService $proxyService)
