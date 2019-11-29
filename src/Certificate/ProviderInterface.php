@@ -14,5 +14,6 @@ interface ProviderInterface
 {
     public function getName(): string;
 
+    /** @param string[] $options */
     public function createCertificate(Certificate $certificate, array $options = []): Certificate;
 }

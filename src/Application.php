@@ -15,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
 
 class Application extends ConsoleApplication
 {
+    /** @param Command[] $commands */
     public function __construct(iterable $commands)
     {
         parent::__construct('console', '1.0.0');

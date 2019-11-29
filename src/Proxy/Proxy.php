@@ -17,6 +17,8 @@ class Proxy
 {
     protected string $domain;
     protected ?Certificate $certificate;
+
+    /** @var ServerCollection[]  */
     protected array $servers = [];
 
     public function __construct(string $domain, Certificate $certificate = null)
@@ -41,9 +43,7 @@ class Proxy
 
     public function addServer(Server $server, string $path = '/'): self
     {
-        if (false === \array_key_exists($path, $this->servers)
-            || false === $this->servers[$path] instanceof ServerCollection
-        ) {
+        if (false === \array_key_exists($path, $this->servers)) {
             $this->servers[$path] = new ServerCollection();
         }
 
@@ -52,6 +52,7 @@ class Proxy
         return $this;
     }
 
+    /** @return string[] */
     public function getPaths(): array
     {
         return array_keys($this->servers);
