@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -15,11 +16,10 @@ use Twig\Environment as Twig;
 
 class TwigFactory
 {
-    /** @var string */
-    protected $templatesDirectory;
+    protected string $templatesDirectory;
 
     /** @var ExtensionInterface[] */
-    protected $twigExtensions = [];
+    protected array $twigExtensions = [];
 
     public function __construct(string $templatesDirectory, iterable $twigExtensions = [])
     {

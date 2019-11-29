@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -22,14 +23,9 @@ class NginxService
 
     protected const VIRTUAL_HOST_HOMEPAGE_FILE = 'default.conf';
 
-    /** @var Twig */
-    protected $twigService;
-
-    /** @var string */
-    protected $virtualHostDirectory;
-
-    /** @var string */
-    protected $homepageDirectory;
+    protected Twig $twigService;
+    protected string $virtualHostDirectory;
+    protected string $homepageDirectory;
 
     public function __construct(Twig $twigService, string $virtualHostDirectory, string $homepageDirectory)
     {

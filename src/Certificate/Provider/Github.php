@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -14,8 +15,7 @@ use App\Certificate\ProviderInterface;
 
 class Github implements ProviderInterface
 {
-    /** @var GithubClient */
-    protected $githubClient;
+    protected GithubClient $githubClient;
 
     public function __construct(GithubClient $githubClient)
     {

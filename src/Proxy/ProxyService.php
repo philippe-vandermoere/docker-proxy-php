@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -88,7 +89,7 @@ class ProxyService
                 );
             }
 
-            if (false === isset($container->getNetworks()[$proxyNetwork->getId()])) {
+            if (false ===  $container->getNetworks()->offsetExists($proxyNetwork->getId())) {
                 $this->dockerService->getNetworkService()->connectContainer(
                     $proxyNetwork->getId(),
                     $container->getId()
@@ -179,7 +180,8 @@ class ProxyService
                 '/' . $this->dockerLabelCertificateProviderPrefix . '.(.*)/',
                 $label->getName(),
                 $matches
-            )) {
+            )
+            ) {
                 $options[$matches[1]] = $label->getValue();
             }
         }

@@ -3,13 +3,13 @@ default:
 test: phpcs phpstan phpunit
 
 phpcs:
-	bin/phpcs
+	vendor/bin/phpcs
 
 phpstan:
-	bin/phpstan
+	vendor/bin/phpstan analyse
 
 phpunit:
-	bin/phpunit
+	phpdbg -qrr vendor/bin/phpunit
 
 docker_build:
 	docker build . \

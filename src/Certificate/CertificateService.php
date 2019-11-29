@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -13,11 +14,8 @@ use App\Certificate\Provider\SelfSigned;
 
 class CertificateService
 {
-    /** @var ProviderCollection */
-    protected $providers;
-
-    /** @var string */
-    protected $certificateDirectory;
+    protected ProviderCollection $providers;
+    protected string $certificateDirectory;
 
     public function __construct(iterable $providers, string $certificateDirectory)
     {
@@ -33,7 +31,7 @@ class CertificateService
     {
         $certificate = $this->createEmptyCertificate($domain);
 
-        if ($certificate->isValid() && false === $certificate->isExpired()) {
+        if (true === $certificate->isValid() && false === $certificate->isExpired()) {
             echo 'Certificate: The certificate is valid for domain ' . $domain . '.' . PHP_EOL;
             return $certificate;
         }

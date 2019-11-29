@@ -26,17 +26,17 @@ docker-compose run php bin/console proxy:run
 #### Code Sniffer
 
 ```bash
-docker-compose run php bin/phpcs
+docker-compose run php make phpcs
 ```
 
 #### Stan
 
 ```bash
-docker-compose run php bin/phpstan
+docker-compose run php make phpstan
 ```
 
 #### Unit
 
 ```bash
-docker-compose run php bin/phpunit
+docker-compose run php make phpunit
 ```

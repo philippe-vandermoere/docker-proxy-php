@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -13,17 +14,10 @@ use App\Validator\Validator;
 
 class Certificate
 {
-    /** @var string */
-    protected $domain;
-
-    /** @var string */
-    protected $certificateFilename;
-
-    /** @var string */
-    protected $privateKeyFilename;
-
-    /** @var string */
-    protected $certificateChainFilename;
+    protected string $domain;
+    protected string $certificateFilename;
+    protected string $privateKeyFilename;
+    protected string $certificateChainFilename;
 
     public function __construct(
         string $domain,
@@ -120,7 +114,8 @@ class Certificate
             if (false === \openssl_x509_check_private_key(
                 $this->getFileContent($this->getCertificateFilename()),
                 $this->getFileContent($this->getPrivateKeyFilename())
-            )) {
+            )
+            ) {
                 return false;
             }
         } catch (\Throwable $throwable) {

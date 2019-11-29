@@ -1,4 +1,4 @@
-FROM php:7.3.11-cli-alpine
+FROM php:7.4.0-cli-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF

@@ -2,7 +2,7 @@ version: '2.1'
 executors:
     php:
         docker:
-            - image: php:7.3.11-cli-alpine
+            - image: php:7.4.0-cli-alpine
 
 jobs:
     vendor:
@@ -39,13 +39,13 @@ jobs:
         steps:
             - run:
                 name: Install requirements
-                command: apk add git openssh-client
+                command: apk add git openssh-client make
             - checkout
             - attach_workspace:
                 at: .
             - run:
                 name: phpcs
-                command: bin/phpcs
+                command: make phpcs
 
     phpstan:
         executor: php
@@ -53,13 +53,13 @@ jobs:
         steps:
             - run:
                 name: Install requirements
-                command: apk add git openssh-client
+                command: apk add git openssh-client make
             - checkout
             - attach_workspace:
                 at: .
             - run:
                 name: phpstan
-                command: bin/phpstan
+                command: make phpstan
 
     phpunit:
         executor: php
@@ -67,13 +67,13 @@ jobs:
         steps:
             - run:
                 name: Install requirements
-                command: apk add git openssh-client
+                command: apk add git openssh-client make
             - checkout
             - attach_workspace:
                 at: .
             - run:
                 name: phpunit
-                command: bin/phpunit
+                command: make phpunit
             - store_artifacts:
                 path: build
             - store_test_results:

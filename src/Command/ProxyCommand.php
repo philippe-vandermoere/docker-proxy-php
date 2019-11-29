@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Philippe VANDERMOERE <philippe@wizaplace.com>
  * @copyright Copyright (C) Philippe VANDERMOERE
@@ -16,10 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProxyCommand extends Command
 {
-    protected static $defaultName = 'proxy:run';
+    protected static string $defaultName = 'proxy:run';
 
-    /** @var ProxyService */
-    protected $proxyService;
+    protected ProxyService $proxyService;
 
     public function __construct(ProxyService $proxyService)
     {
