@@ -17,4 +17,4 @@ services:
     App\Twig\ProxyExtension: ~
 
     Twig\Environment:
-        factory: 'App\Twig\TwigFactory:create'
+        factory: ['@App\Twig\TwigFactory', 'create']
